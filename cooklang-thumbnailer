@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import requests, sys
+from PIL import Image
+from io import BytesIO 
+
+input_file = sys.argv[1]
+output_file = sys.argv[2]
+size = int(sys.argv[3])
+
+img_url = ""
+
+with open(input_file, "r") as f:
+    for i in f.readlines():
+        if i.startswith(">> image:"):
+            img_url = i.replace(">> image:", "").strip()
+
+if img_url:
+    r = requests.get(img_url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'})
+    im = Image.open(BytesIO(r.content))
+    im.thumbnail((size, size), Image.LANCZOS)
+    if im.mode == "CMYK":
+        im = im.convert("RGB")
+    #open(sys.argv[2], 'wb').write(r.content)
+    im.save(sys.argv[2], "PNG")
+
