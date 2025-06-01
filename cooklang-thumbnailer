@@ -11,8 +11,8 @@ img_url = ""
 
 with open(input_file, "r") as f:
     for i in f.readlines():
-        if i.startswith(">> image:"):
-            img_url = i.replace(">> image:", "").strip()
+        if i.startswith("image:"):
+            img_url = i.replace("image:", "").strip()
 
 if img_url:
     r = requests.get(img_url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'})
